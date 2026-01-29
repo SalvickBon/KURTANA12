@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KURTANA.net</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --glass-bg: rgba(10, 10, 15, 0.95);
+            --glass-border: rgba(50, 100, 200, 0.3);
+            --aero-blue: #38bdf8;
+            --aero-glow: rgba(56, 189, 248, 0.2);
+            --bg-gif: url('https://i.pinimg.com/originals/af/94/e3/af94e32f80686f5cce3b6ded5065d110.gif');
+            --bg-static: url('');
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            background-image:
+                var(--bg-gif),
+                var(--bg-static);
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.9);
+        }
+
+        .aero-btn {
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.9) 0%, rgba(2, 132, 199, 0.8) 50%, rgba(3, 105, 161, 0.9) 51%, rgba(7, 89, 133, 1) 100%);
+            border: 1px solid rgba(186, 230, 253, 0.4);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.1s;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .aero-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .aero-btn:active {
+            transform: translateY(1px);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .game-card {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .game-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6), 0 0 5px var(--aero-glow);
+            border-color: var(--aero-blue);
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border: 1px solid #020617;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .search-input {
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+            border: 1px solid #475569;
+            transition: all 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .search-input:focus {
+            border-color: var(--aero-blue);
+            background: rgba(0, 0, 0, 0.8);
+            outline: none;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+
+<body class="flex flex-col">
+
+    <header class="glass sticky top-0 z-50 border-b border-white/10">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-none bg-gradient-to-br from-blue-900 to-slate-900 flex items-center justify-center shadow border border-white/20">
+                        <IMG src="https://i.ibb.co/23W1wffX/Gemini-Generated-Image-eeqrq8eeqrq8eeqr.png"></IMG>
+                        <!--<i class="fa-solid fa-database text-lg text-blue-400"></i>-->
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white tracking-tight uppercase">
+                            KURTANA.net
+                        </h1>
+                        <p class="text-[10px] text-slate-400 tracking-widest uppercase font-mono">paraiso de libertad</p>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/3 relative group">
+                    <input type="text" id="searchInput" placeholder="BUSCAR JUEGOS..."
+                        class="search-input w-full rounded-none py-1.5 pl-10 pr-4 text-sm text-blue-100 placeholder-slate-600 border border-slate-700 bg-black/60 focus:bg-black/90 uppercase">
+                    <i
+                        class="fa-solid fa-magnifying-glass absolute left-3 top-2 text-xs text-slate-600 group-focus-within:text-blue-400 transition-colors"></i>
+                </div>
+            </div>
+
+            <!-- CATEGORIAS -->
+            <nav class="mt-2 flex flex-wrap justify-center gap-1" id="categoryContainer">
+
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-6 relative z-10 flex flex-col lg:flex-row gap-6">
+
+        <div class="w-full lg:w-3/4 flex flex-col">
+
+            <div
+                class="glass rounded-none p-2 mb-6 flex justify-between items-center text-xs text-slate-400 border-l-2 border-blue-600 bg-black/80 font-mono">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-600 animate-pulse"></span>
+                    <span>INDEX: <span id="totalCount" class="font-bold text-white">0</span> ITEMS</span>
+                </div>
+                <div><i class="fa-solid fa-server mr-1"></i></div>
+            </div>
+
+            <div id="gridContainer" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- TARJETAS -->
+            </div>
+
+            <!-- ERROR-01 -->
+            <div id="noResults" class="hidden flex-col items-center justify-center py-20 text-center opacity-60">
+                <i class="fa-solid fa-folder-open text-5xl text-slate-700 mb-4"></i>
+                <h3 class="text-xl font-bold text-slate-500 font-mono uppercase">Archivo no encontrado</h3>
+                <p class="text-slate-600 text-sm">Verifique los parámetros de búsqueda.</p>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Novedades y Noticias -->
+        <aside class="w-full lg:w-1/4 hidden lg:flex flex-col gap-4 sticky top-20 h-[calc(100vh-6rem)]">
+
+            <div
+                class="glass p-4 rounded-none bg-black/80 border-l border-b border-r border-slate-700 border-t-2 border-t-blue-500 shadow-lg">
+                <div class="flex items-center gap-2 mb-4 border-b border-white/10 pb-2">
+                    <!-- <i class="fa-solid fa-terminal text-green-500 text-xs"></i> -->
+                    <h3 class="text-white font-bold text-xs uppercase font-mono tracking-wider">NOVEDADES</h3>
+                </div>
+
+                <ul class="space-y-4 font-mono">
+                    <li class="relative pl-4 border-l border-slate-700">
+                        <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 bg-blue-600 rounded-none"></span>
+                        <div class="text-[10px] text-blue-400 font-bold mb-0.5">VERSIÓN 1.2</div>
+                        <p class="text-[10px] text-slate-400 leading-tight">CIENTOS DE JUEGOS AÑADIDOS.</p>
+                    </li>
+                    <li class="relative pl-4 border-l border-slate-700">
+                        <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 bg-slate-600 rounded-none"></span>
+                        <div class="text-[10px] text-slate-500 font-bold mb-0.5">UI UPDATE</div>
+                        <p class="text-[10px] text-slate-500 leading-tight">INTERFAZ MEJORADA Y OPTIMIZADA PARA PCS DE BAJOS RECURSOS</p>
+                    </li>
+                    <li class="relative pl-4 border-l border-slate-700">
+                        <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 bg-slate-600 rounded-none"></span>
+                        <div class="text-[10px] text-slate-500 font-bold mb-0.5">NADA DE ACORTADORES</div>
+                        <p class="text-[10px] text-slate-500 leading-tight">ACCESO DIRECTO A ENLACES SIN ACORTADORES DE LINK</p>
+                    </li>
+                    <li class="relative pl-4 border-l border-slate-700">
+                        <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 bg-slate-600 rounded-none"></span>
+                        <div class="text-[10px] text-slate-500 font-bold mb-0.5">ENLACE A PROGRAMAS Y MAS</div>
+                        <p class="text-[10px] text-slate-500 leading-tight">PROGRAMAS Y SISTEMAS OPERATIVOS PARA JUGAR Y MAS</p>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- PUBLICIDAD POR AHORA NO xddd
+            <div class="glass p-1 rounded-none bg-black/40 sticky top-36">
+                <div class="bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] bg-slate-900 h-64 flex flex-col items-center justify-center border border-white/5 text-slate-600 text-[10px] font-mono gap-2">
+                    <i class="fa-solid fa-rectangle-ad text-3xl opacity-50"></i>
+                    <span>ESPACIO PUBLICITARIO</span>
+                    <span class="text-[9px] opacity-50">300 x 250</span>
+                </div>
+            </div>
+            
+             <div class="glass p-1 rounded-none bg-black/40 sticky top-[26rem]">
+                <div class="bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] bg-slate-900 h-96 flex flex-col items-center justify-center border border-white/5 text-slate-600 text-[10px] font-mono gap-2">
+                    <i class="fa-solid fa-rectangle-ad text-3xl opacity-50"></i>
+                    <span>ESPACIO PUBLICITARIO</span>
+                    <span class="text-[9px] opacity-50">300 x 600</span>
+                </div>
+            </div>
+            -->
+
+            <!-- DESTACADA-->
+            <div
+                class="mt-auto glass p-0 rounded-none bg-black/80 border border-slate-700 group cursor-pointer hover:border-blue-500 transition-colors">
+                <div class="relative h-40 overflow-hidden bg-slate-900">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe7g_10FUYr9sjpCmAUoLNsQuWsL_pfJHwvQ&s"
+                        class="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                    <div class="absolute bottom-3 left-3 right-3">
+                        <span
+                            class="bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-none font-mono mb-2 inline-block">DESTACADO</span>
+                        <h3
+                            class="text-white font-bold text-sm leading-tight uppercase font-mono text-shadow-sm group-hover:text-blue-300 transition-colors">
+                            GTA SAN ANDREAS OPTIMIZADO!</h3>
+                    </div>
+                </div>
+                <div class="p-3 border-t border-white/5">
+                    <p class="text-[10px] text-slate-400 font-mono leading-relaxed">
+                        NUEVO GTA SAN ANDREAS OPTIMIZADO!
+                    </p>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <footer class="glass mt-8 py-6 border-t border-white/5 bg-black/90">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center gap-4 mb-4">
+                <!--<a href="#"
+                    class="w-8 h-8 rounded-none bg-slate-800 flex items-center justify-center hover:bg-blue-700 text-slate-400 hover:text-white transition-colors border border-slate-700"><i
+                        class="fa-brands fa-youtube"></i></a>
+                    <a href="#"
+                    class="w-8 h-8 rounded-none bg-slate-800 flex items-center justify-center hover:bg-indigo-700 text-slate-400 hover:text-white transition-colors border border-slate-700"><i
+                        class="fa-brands fa-discord"></i></a>
+                    <a href="#"
+                    class="w-8 h-8 rounded-none bg-slate-800 flex items-center justify-center hover:bg-pink-700 text-slate-400 hover:text-white transition-colors border border-slate-700"><i
+                        class="fa-brands fa-tiktok"></i></a>-->
+            </div>
+            <p class="text-slate-600 text-xs font-mono uppercase">indice de videojuegos gratuito sin alojamiento de archivos</p>
+        </div>
+    </footer>
+
+    <div id="modalOverlay"
+        class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4 backdrop-blur-sm bg-black/90">
+        <div
+            class="glass w-full max-w-4xl rounded-none overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh] border border-slate-500">
+
+            <div
+                class="w-full md:w-2/5 h-48 md:h-auto relative bg-black border-r border-slate-700 flex items-center justify-center overflow-hidden">
+                <img id="mCover" src="" alt="Cover" class="w-full h-full object-cover opacity-90">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                <span id="mBadge"
+                    class="absolute top-0 left-0 px-2 py-1 bg-blue-800 text-white text-[10px] font-bold border-b border-r border-blue-500 font-mono">
+                    ARCHIVO
+                </span>
+            </div>
+
+            <div class="w-full md:w-3/5 p-6 flex flex-col overflow-y-auto bg-[#0a0f18]">
+                <div class="flex justify-between items-start mb-2">
+                    <h2 id="mTitle"
+                        class="text-2xl font-bold text-white leading-none font-mono tracking-tighter uppercase">
+                        TITULO_DEL_JUEGO</h2>
+                    <button onclick="closeModal()" class="text-slate-500 hover:text-red-500 transition-colors p-1">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div
+                    class="flex items-center gap-3 text-xs text-blue-400 mb-6 border-b border-slate-800 pb-3 font-mono uppercase">
+                    <span id="mCatIcon"><i class="fa-solid fa-gamepad"></i></span>
+                    <span id="mCatName">CATEGORIA</span>
+                    <span class="text-slate-700">|</span>
+                    <span id="mSize" class="text-slate-300">0 GB</span>
+                </div>
+
+                <div class="space-y-4 mb-8 flex-grow">
+                    <div>
+                        <h4
+                            class="text-[10px] text-slate-500 uppercase font-bold mb-1 tracking-widest border-b border-slate-800 w-max pb-0.5">
+                            DESCRIPCIÓN</h4>
+                        <p id="mDesc" class="text-slate-300 text-sm leading-relaxed font-sans">
+                            Descripción corta del juego...
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-px bg-slate-800 border border-slate-700">
+                        <div class="bg-[#0f1520] p-3">
+                            <p class="text-[9px] text-slate-500 uppercase font-bold">SISTEMA</p>
+                            <p id="mOS" class="text-green-500 text-xs font-mono font-bold">Windows 10</p>
+                        </div>
+                        <div class="bg-[#0f1520] p-3">
+                            <p class="text-[9px] text-slate-500 uppercase font-bold">MEMORIA</p>
+                            <p id="mRam" class="text-yellow-500 text-xs font-mono font-bold">4 GB</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4
+                            class="text-[10px] text-slate-500 uppercase font-bold mb-1 tracking-widest border-b border-slate-800 w-max pb-0.5">
+                            NOTAS TÉCNICAS</h4>
+                        <p id="mDetails"
+                            class="text-slate-400 text-xs font-mono bg-black/30 p-2 border border-slate-800">
+                            Sin información adicional.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-auto">
+                    <a id="mDownload" href="#" target="_blank"
+                        class="aero-btn w-full block text-center py-3 rounded-none text-white font-bold text-sm tracking-widest uppercase hover:no-underline border border-blue-400">
+                        <i class="fa-solid fa-download mr-2"></i> DESCARGAR RECURSO
+                    </a>
+                    <p class="text-center text-[9px] text-slate-600 mt-2 font-mono uppercase">Enlace externo. No se alojan archivos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CATEGORIAS DE LOS PROGRAMAS
+        const categories = [
+            { id: 'all', label: 'ALL', icon: 'fa-globe' },
+            { id: 'games', label: 'PC GAMES', icon: 'fa-gamepad' },
+            { id: 'mobile', label: 'MOBILE', icon: 'fa-mobile-screen' },
+            { id: 'emulators', label: 'EMU', icon: 'fa-compact-disc' },
+            { id: 'opticraft', label: 'MINECRAFT', icon: 'fa-cube' },
+            { id: 'software', label: 'APPS', icon: 'fa-floppy-disk' },
+            { id: 'systems', label: 'OS', icon: 'fa-microchip' },
+            { id: 'extra', label: 'EXTRA', icon: 'fa-star' }
+        ];
+
+        let database = [];
+
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        const grid = document.getElementById('gridContainer');
+        const nav = document.getElementById('categoryContainer');
+        const modal = document.getElementById('modalOverlay');
+        const noResults = document.getElementById('noResults');
+        const totalCount = document.getElementById('totalCount');
+
+        async function init() {
+            renderNav();
+
+            try {
+                const response = await fetch('database.json');
+                const rawData = await response.json();
+
+                database = rawData.filter(item => !item._comment);
+
+                totalCount.innerText = database.length;
+                renderGrid();
+            } catch (error) {
+                console.error('Error cargando la base de datos:', error);
+                grid.innerHTML = `<div class="col-span-full text-center text-red-400 p-8 glass rounded-none">
+                    <i class="fa-solid fa-triangle-exclamation text-4xl mb-2"></i>
+                    <p class="font-mono text-sm">ERROR DE CONEXIÓN DATABASE.JSON</p>
+                    <p class="text-xs text-slate-500 mt-2 font-mono">${error.message}</p>
+                </div>`;
+            }
+
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                renderGrid();
+            });
+        }
+
+        function renderNav() {
+            nav.innerHTML = categories.map(cat => `
+                <button onclick="setCategory('${cat.id}')" 
+                    class="px-3 py-1.5 rounded-none flex items-center gap-2 text-[10px] font-bold text-white transition-all border
+                    ${currentCategory === cat.id ? 'bg-blue-700 border-blue-500 shadow-md' : 'bg-slate-900 border-slate-700 hover:bg-slate-800 text-slate-400'}">
+                    <i class="fa-solid ${cat.icon}"></i> ${cat.label}
+                </button>
+            `).join('');
+        }
+
+        function setCategory(id) {
+            currentCategory = id;
+            renderNav();
+            renderGrid();
+        }
+
+        function getGradient(title) {
+            const colors = [
+                'from-blue-900 to-black',
+                'from-slate-800 to-black',
+                'from-indigo-900 to-black',
+                'from-sky-900 to-black'
+            ];
+            return colors[title.length % colors.length];
+        }
+
+        function renderGrid() {
+            grid.innerHTML = '';
+
+            const filtered = database.filter(item => {
+                const matchCat = currentCategory === 'all' || item.category === currentCategory;
+                const matchSearch = item.title.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+                noResults.classList.add('flex');
+            } else {
+                noResults.classList.add('hidden');
+                noResults.classList.remove('flex');
+            }
+
+            filtered.forEach(item => {
+                let typeIcon = 'fa-gamepad';
+                if (item.category === 'mobile') typeIcon = 'fa-android';
+                if (item.category === 'software') typeIcon = 'fa-compact-disc';
+                if (item.category === 'systems') typeIcon = 'fa-windows';
+                if (item.category === 'opticraft') typeIcon = 'fa-cube';
+
+                const hasCover = item.cover && item.cover.length > 5;
+                const bgClass = hasCover ? '' : `bg-gradient-to-br ${getGradient(item.title)}`;
+                const imgHTML = hasCover
+                    ? `<img src="${item.cover}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="${item.title}">`
+                    : `<div class="w-full h-full flex flex-col items-center justify-center p-4 text-center">
+                         <i class="fa-solid ${typeIcon} text-4xl text-white/10 mb-2 group-hover:text-blue-500/50 transition-colors"></i>
+                         <span class="text-white/40 font-bold text-sm font-mono uppercase tracking-widest border-2 border-white/10 p-1 px-2">${item.title.substring(0, 3)}</span>
+                       </div>`;
+
+                const card = document.createElement('div');
+                card.className = 'glass rounded-none overflow-hidden game-card cursor-pointer group flex flex-col h-full relative border border-slate-800 hover:border-blue-600 bg-[#0a0a0f]';
+                card.onclick = () => openModal(item);
+
+                card.innerHTML = `
+                    <div class="h-32 ${bgClass} relative overflow-hidden bg-black border-b border-slate-800">
+                        ${imgHTML}
+                        <!-- Badge Size -->
+                        <div class="absolute bottom-0 right-0 bg-black/80 px-1.5 py-0.5 text-[9px] font-mono text-blue-300 border-l border-t border-slate-700">
+                            ${item.size}
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 flex flex-col flex-grow">
+                        <h3 class="font-bold text-xs text-gray-200 mb-1 leading-tight group-hover:text-blue-400 transition-colors line-clamp-1 font-mono uppercase tracking-tight">${item.title}</h3>
+                        <p class="text-[10px] text-slate-500 mb-2 line-clamp-2 leading-relaxed">${item.desc}</p>
+                        
+                        <div class="mt-auto pt-2 border-t border-white/5 flex justify-between items-center">
+                            <span class="text-[9px] text-slate-600 font-mono uppercase">${item.os.substring(0, 10)}</span>
+                            <i class="fa-solid fa-caret-right text-slate-700 group-hover:text-blue-500"></i>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openModal(item) {
+            document.getElementById('mTitle').innerText = item.title;
+            document.getElementById('mDesc').innerText = item.desc;
+            document.getElementById('mDetails').innerText = item.details || "Sin información adicional.";
+            document.getElementById('mDownload').href = item.link;
+            document.getElementById('mSize').innerText = item.size;
+            document.getElementById('mOS').innerText = item.os;
+            document.getElementById('mRam').innerText = item.ram || '--';
+
+            const catObj = categories.find(c => c.id === item.category);
+            document.getElementById('mCatName').innerText = catObj ? catObj.label : 'ARCHIVO';
+
+            const mCover = document.getElementById('mCover');
+            if (item.cover && item.cover.length > 5) {
+                mCover.src = item.cover;
+                mCover.parentElement.classList.remove('bg-gradient-to-br', 'from-blue-900', 'to-slate-900');
+            } else {
+                mCover.src = `https://placehold.co/800x450/050505/1e3a8a?text=${encodeURIComponent(item.title)}`;
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        init();
+    </script>
+</body>
+
+</html>
